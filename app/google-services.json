@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "490843733301",
+    "firebase_url": "https://food-fight-90473.firebaseio.com",
+    "project_id": "food-fight-90473",
+    "storage_bucket": "food-fight-90473.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490843733301:android:3aabf2cc25e44787",
+        "android_client_info": {
+          "package_name": "letshangllc.foodfight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490843733301-grp35d59fk2d9713rvjdur3hv0ec54qf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTkNrqiUCoWgjI4X1g--v0jon7rPkVeoQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
