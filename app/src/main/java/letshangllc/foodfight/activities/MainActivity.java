@@ -1,5 +1,9 @@
 package letshangllc.foodfight.activities;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +27,7 @@ import letshangllc.foodfight.fragments.ProfileFragment;
 import letshangllc.foodfight.fragments.TopFoodsFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     /* Views */
     private Toolbar toolbar;
@@ -91,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        PackageManager packageManager = this.getPackageManager();
+        if(!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) return true;
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_toolbar, menu);
         return true;
@@ -111,7 +120,22 @@ public class MainActivity extends AppCompatActivity {
     /*
      * Capture a photo to upload
      */
-    private void capturePhoto(){
+    static final int REQUEST_IMAGE_CAPTURE = 11;
 
+    private void capturePhoto(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Log.i(TAG, "Got photo");
+            //mImageView.setImageBitmap(imageBitmap);
+        }
     }
 }
