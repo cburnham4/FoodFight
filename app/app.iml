@@ -95,6 +95,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="constraint-layout-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="placeholderview-0.6.2" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="transition-25.3.1" level="project" />
@@ -114,6 +115,7 @@
     <orderEntry type="library" exported="" name="play-services-auth-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="firebase-storage-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-impl-10.2.6" level="project" />
+    <orderEntry type="library" exported="" name="constraint-layout-solver-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="firebase-common-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-10.2.6" level="project" />

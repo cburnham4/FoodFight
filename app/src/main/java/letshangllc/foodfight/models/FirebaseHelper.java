@@ -19,6 +19,7 @@ import com.google.firebase.storage.UploadTask;
 public class FirebaseHelper {
     private static final String TAG = FirebaseHelper.class.getSimpleName();
     private static FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private static FirebaseAuth firebaseAuth;
 
 
 
@@ -28,8 +29,10 @@ public class FirebaseHelper {
     @SuppressWarnings("VisibleForTests")
     public static void uploadImage(Uri uri, FirebaseAuth firebaseAuth, StorageReference localStorageReference){
         Log.i(TAG, "Upload image");
+
+        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        String userid = user.getUid();
+        final String userid = user.getUid();
 
         String fileName = "fileName.jpg";
         String filePath = "images/users/"+userid+"/"+fileName;
@@ -44,7 +47,7 @@ public class FirebaseHelper {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(TAG, "upload success: ");
                 Uri uri = taskSnapshot.getDownloadUrl();
-                uploadDownloadURL(uri);
+                uploadDownloadURL(uri, userid);
             }
         });
     }
@@ -52,10 +55,14 @@ public class FirebaseHelper {
     /*
      * Upload photo download url
      */
-    private static void uploadDownloadURL(Uri downloadURL){
+    private static void uploadDownloadURL(Uri downloadURL, String userId){
+        Log.i(TAG, "Save download url" + downloadURL.toString());
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        DatabaseReference databaseReference = firebaseDatabase.getReference("message");
-        databaseReference.setValue(downloadURL);
+        UserPost userPost = new UserPost(userId, "Meal", null, null, downloadURL.toString(), 1);
+
+        DatabaseReference databaseReference = firebaseDatabase.getReference("userPosts").child(userId);
+        String postId = databaseReference.push().getKey();
+        databaseReference.child(postId).setValue(userPost);
     }
 }
