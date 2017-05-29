@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 import letshangllc.foodfight.R;
 import letshangllc.foodfight.models.DatabaseConstants;
+import letshangllc.foodfight.models.FirebaseHelper;
 import letshangllc.foodfight.models.Meal;
 import letshangllc.foodfight.models.MealCard;
 import letshangllc.foodfight.models.UserPost;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         setupToolbar();
     }
@@ -86,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         databaseReference.addListenerForSingleValueEvent(postListener);
-
     }
 
     private void setupSwipeView(ArrayList<UserPost> userPosts) {
@@ -144,9 +147,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_upload_meal:
                 startActivity(new Intent(MainActivity.this, CreateUserMealActivity.class));
                 return true;
+            case R.id.action_logout:
+                logout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void logout(){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
 }

@@ -1,6 +1,7 @@
 package letshangllc.foodfight.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,8 +15,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,28 +51,34 @@ public class CreateUserMealActivity extends AppCompatActivity {
 
     /* Views */
     private TextView tvUploadImage;
+    private EditText etMealName;
+
+    /* Selected photo */
+    private Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_meal);
 
-        setupFirebase();
+        setupToolbar();
         findViews();
         checkPermissions();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     public void uploadPhotoOnClick(View view){
         getPhotoFromGallery();
     }
 
-    private void setupFirebase(){
-        firebaseAuth = FirebaseAuth.getInstance();
-        localStorageReference = FirebaseStorage.getInstance().getReference();
-    }
 
     private void findViews(){
         tvUploadImage = (TextView) findViewById(R.id.tvUploadImage);
+        etMealName = (EditText) findViewById(R.id.etMealName);
     }
 
      /*
@@ -131,13 +143,13 @@ public class CreateUserMealActivity extends AppCompatActivity {
                     break;
                 case SELECT_PICTURE:
                     try {
-                        Uri selectedImageUri = data.getData();
-                        FirebaseHelper.uploadImage(selectedImageUri, firebaseAuth, localStorageReference);
+                        selectedImageUri = data.getData();
 
                         /* Get bitmap */
                         InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         tvUploadImage.setBackground(new BitmapDrawable(getResources(), selectedImage));
+                        tvUploadImage.setText("");
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Toast.makeText(CreateUserMealActivity.this, "Something went wrong. Please Try Again",
@@ -159,5 +171,58 @@ public class CreateUserMealActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,
                 "Select Picture"), SELECT_PICTURE);
+    }
+
+    /*
+     * Menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_create_meal_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_post:
+                Log.i(TAG, "Post image to Firebase");
+                uploadImage();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void uploadImage(){
+        String mealName = etMealName.getText().toString();
+
+        Log.i(TAG, "Mealname " + mealName);
+        Log.i(TAG, "URI: " + selectedImageUri.toString());
+
+        if(mealName.isEmpty() || selectedImageUri == null){
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        final ProgressDialog progressDialog = ProgressDialog.show(this, "Uploading Meal", "Please wait...", true, false);
+        progressDialog.show();
+
+        /* upload the photo and make toast based on callback */
+        FirebaseHelper.uploadImage(selectedImageUri, mealName, new FirebaseHelper.FirebaseListener() {
+            @Override
+            public void firebaseSucceeded(boolean success) {
+                progressDialog.dismiss();
+                if(success){
+                    Toast.makeText(CreateUserMealActivity.this, "Upload Complete", Toast.LENGTH_LONG).show();
+                    finish();
+                }else{
+                    Toast.makeText(CreateUserMealActivity.this, "Upload Failed", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

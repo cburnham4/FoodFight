@@ -26,6 +26,7 @@
             android:onClick="uploadPhotoOnClick"/>
 
         <EditText
+            android:id="@+id/etMealName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/meal_name"/>
