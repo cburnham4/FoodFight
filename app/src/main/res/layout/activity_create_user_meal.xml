@@ -20,7 +20,7 @@
             android:id="@+id/tvUploadImage"
             android:layout_width="match_parent"
             android:layout_height="@dimen/meal_photo_height"
-            android:background="@android:color/darker_gray"
+            android:background="@color/light_grey"
             android:gravity="center"
             android:text="@string/upload_image"
             android:onClick="uploadPhotoOnClick"/>
