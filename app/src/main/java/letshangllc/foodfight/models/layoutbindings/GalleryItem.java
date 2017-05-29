@@ -1,8 +1,10 @@
 package letshangllc.foodfight.models.layoutbindings;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.mindorks.placeholderview.Animation;
 import com.mindorks.placeholderview.annotations.Animate;
 import com.mindorks.placeholderview.annotations.Layout;
@@ -11,6 +13,7 @@ import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
 
 import letshangllc.foodfight.R;
+import letshangllc.foodfight.models.UserPost;
 
 /**
  * Created by carlburnham on 5/29/17.
@@ -22,16 +25,20 @@ import letshangllc.foodfight.R;
 public class GalleryItem {
 
     @View(R.id.imgMeal)
-    private ImageView imageView;
+    private ImageView imgMeal;
 
     private Drawable mDrawable;
 
-    public GalleryItem(Drawable drawable) {
-        mDrawable = drawable;
+    private UserPost userPost;
+    private Context context;
+
+    public GalleryItem(Context context, UserPost userPost) {
+        this.userPost = userPost;
+        this.context = context;
     }
 
     @Resolve
     private void onResolved() {
-        imageView.setImageDrawable(mDrawable);
+        Glide.with(context).load(userPost.downloadUrl).into(imgMeal);
     }
 }

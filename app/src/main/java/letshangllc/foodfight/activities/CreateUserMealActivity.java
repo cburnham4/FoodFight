@@ -159,9 +159,9 @@ public class CreateUserMealActivity extends AppCompatActivity {
                     break;
                 case SELECT_PICTURE:
 
-                        selectedImageUri = data.getData();
+                        Uri imageUri = data.getData();
 
-                        CropImage.activity(selectedImageUri)
+                        CropImage.activity(imageUri)
                                 .setGuidelines(CropImageView.Guidelines.ON)
                                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                                 .setMinCropWindowSize(240,240)
@@ -174,10 +174,10 @@ public class CreateUserMealActivity extends AppCompatActivity {
                 case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
                     try {
                         CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                        Uri resultUri = result.getUri();
+                        selectedImageUri = result.getUri();
 
                         /* Get bitmap */
-                        InputStream imageStream = getContentResolver().openInputStream(resultUri);
+                        InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         imgUploadedImage.setImageBitmap(selectedImage);
 //                        tvUploadImage.setBackground(new BitmapDrawable(getResources(), selectedImage));
@@ -232,9 +232,6 @@ public class CreateUserMealActivity extends AppCompatActivity {
 
     private void uploadImage(){
         String mealName = etMealName.getText().toString();
-
-        Log.i(TAG, "Mealname " + mealName);
-        Log.i(TAG, "URI: " + selectedImageUri.toString());
 
         if(mealName.isEmpty() || selectedImageUri == null){
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_LONG).show();
