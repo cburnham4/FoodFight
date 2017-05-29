@@ -22,18 +22,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import letshangllc.foodfight.R;
 import letshangllc.foodfight.models.FirebaseHelper;
+import letshangllc.foodfight.models.Utils;
+
+import static java.security.AccessController.getContext;
 
 public class CreateUserMealActivity extends AppCompatActivity {
     private static final String TAG = CreateUserMealActivity.class.getSimpleName();
@@ -52,6 +58,7 @@ public class CreateUserMealActivity extends AppCompatActivity {
     /* Views */
     private TextView tvUploadImage;
     private EditText etMealName;
+    private ImageView imgUploadedImage;
 
     /* Selected photo */
     private Uri selectedImageUri;
@@ -64,6 +71,14 @@ public class CreateUserMealActivity extends AppCompatActivity {
         setupToolbar();
         findViews();
         checkPermissions();
+
+        cropImage();
+    }
+
+    private void cropImage(){
+        // start picker to get image for cropping and then use the image in cropping activity
+
+
     }
 
     private void setupToolbar() {
@@ -79,6 +94,7 @@ public class CreateUserMealActivity extends AppCompatActivity {
     private void findViews(){
         tvUploadImage = (TextView) findViewById(R.id.tvUploadImage);
         etMealName = (EditText) findViewById(R.id.etMealName);
+        imgUploadedImage = (ImageView) findViewById(R.id.imgUploadedImage);
     }
 
      /*
@@ -142,20 +158,37 @@ public class CreateUserMealActivity extends AppCompatActivity {
                     Log.i(TAG, "Got photo");
                     break;
                 case SELECT_PICTURE:
-                    try {
+
                         selectedImageUri = data.getData();
 
+                        CropImage.activity(selectedImageUri)
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                                .setMinCropWindowSize(240,240)
+                                .setMinCropResultSize(240,240)
+                                .setMaxCropResultSize(720,720)
+                                .setAspectRatio(1,1)
+                                .start(this);
+
+                    break;
+                case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                    try {
+                        CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                        Uri resultUri = result.getUri();
+
                         /* Get bitmap */
-                        InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
+                        InputStream imageStream = getContentResolver().openInputStream(resultUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        tvUploadImage.setBackground(new BitmapDrawable(getResources(), selectedImage));
-                        tvUploadImage.setText("");
+                        imgUploadedImage.setImageBitmap(selectedImage);
+//                        tvUploadImage.setBackground(new BitmapDrawable(getResources(), selectedImage));
+
+                        Log.i(TAG, "X: " + selectedImage.getWidth() + " Y: " + selectedImage.getHeight());
+//
+                        tvUploadImage.setVisibility(View.GONE);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
-                        Toast.makeText(CreateUserMealActivity.this, "Something went wrong. Please Try Again",
-                                Toast.LENGTH_LONG).show();
+                        Utils.makeToast(CreateUserMealActivity.this, "Something went wrong. Please Try Again");
                     }
-
                     break;
             }
 

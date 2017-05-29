@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if (user != null) {
-            //login(user);
+            login(user);
         }
     }
 
@@ -104,7 +104,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(FirebaseUser user){
-        progressDialog.dismiss();
+        if(progressDialog!=null)progressDialog.dismiss();
+
         startActivity(new Intent(this, MainActivity.class));
     }
 
