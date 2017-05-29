@@ -2,7 +2,6 @@ package letshangllc.foodfight.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -27,11 +26,8 @@ import java.util.ArrayList;
 
 import letshangllc.foodfight.R;
 import letshangllc.foodfight.models.DatabaseConstants;
-import letshangllc.foodfight.models.FirebaseHelper;
-import letshangllc.foodfight.models.Meal;
-import letshangllc.foodfight.models.MealCard;
+import letshangllc.foodfight.models.layoutbindings.MealCard;
 import letshangllc.foodfight.models.UserPost;
-import letshangllc.foodfight.models.Utils;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();

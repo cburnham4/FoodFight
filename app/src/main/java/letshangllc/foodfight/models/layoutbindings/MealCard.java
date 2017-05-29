@@ -1,4 +1,4 @@
-package letshangllc.foodfight.models;
+package letshangllc.foodfight.models.layoutbindings;
 
 import android.content.Context;
 import android.util.Log;
@@ -19,6 +19,7 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 import java.util.Locale;
 
 import letshangllc.foodfight.R;
+import letshangllc.foodfight.models.UserPost;
 
 import static android.content.ContentValues.TAG;
 

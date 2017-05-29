@@ -31,6 +31,7 @@ dependencies {
     //Google support
 
     //Custom Libraries
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 
     // firebase
     compile 'com.android.support:support-v4:25.3.1'
