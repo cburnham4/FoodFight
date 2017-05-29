@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         progressDialog = ProgressDialog.show(this, "Gathering data", "Please wait...", true, false);
+        progressDialog.show();
         getData();
 
     }

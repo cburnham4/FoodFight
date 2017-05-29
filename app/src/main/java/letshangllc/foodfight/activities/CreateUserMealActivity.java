@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,12 +43,17 @@ public class CreateUserMealActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private StorageReference localStorageReference;
 
+    /* Views */
+    private TextView tvUploadImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_meal);
 
         setupFirebase();
+        findViews();
+        checkPermissions();
     }
 
     public void uploadPhotoOnClick(View view){
@@ -56,6 +63,10 @@ public class CreateUserMealActivity extends AppCompatActivity {
     private void setupFirebase(){
         firebaseAuth = FirebaseAuth.getInstance();
         localStorageReference = FirebaseStorage.getInstance().getReference();
+    }
+
+    private void findViews(){
+        tvUploadImage = (TextView) findViewById(R.id.tvUploadImage);
     }
 
      /*
@@ -126,6 +137,7 @@ public class CreateUserMealActivity extends AppCompatActivity {
                         /* Get bitmap */
                         InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        tvUploadImage.setBackground(new BitmapDrawable(getResources(), selectedImage));
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Toast.makeText(CreateUserMealActivity.this, "Something went wrong. Please Try Again",

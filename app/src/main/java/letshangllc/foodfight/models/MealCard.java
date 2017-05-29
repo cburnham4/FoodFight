@@ -16,6 +16,8 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeInState;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
+import java.util.Locale;
+
 import letshangllc.foodfight.R;
 
 import static android.content.ContentValues.TAG;
@@ -49,7 +51,7 @@ public class MealCard {
     private void onResolved(){
         Glide.with(mContext).load(userPost.downloadUrl).into(imgMeal);
         nameAgeTxt.setText(userPost.mealName);
-        locationNameTxt.setText(userPost.score);
+        locationNameTxt.setText(String.format(Locale.getDefault()," %d",userPost.score));
     }
 
     @SwipeOut
