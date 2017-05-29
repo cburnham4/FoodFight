@@ -18,6 +18,8 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 import letshangllc.foodfight.R;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by carlburnham on 5/28/17.
  */
@@ -33,27 +35,27 @@ public class MealCard {
     @View(R.id.tvRestaurant)
     private TextView locationNameTxt;
 
-    private Meal mMeal;
+    private UserPost userPost;
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
 
-    public MealCard(Context context, Meal meal, SwipePlaceHolderView swipeView) {
+    public MealCard(Context context, UserPost userPost, SwipePlaceHolderView swipeView) {
         mContext = context;
-        mMeal = meal;
+        this.userPost = userPost;
         mSwipeView = swipeView;
     }
 
     @Resolve
     private void onResolved(){
-        Glide.with(mContext).load(mMeal.getImageUrl()).into(imgMeal);
-        nameAgeTxt.setText(mMeal.getName() + ", " + mMeal.getAge());
-        locationNameTxt.setText(mMeal.getLocation());
+        Glide.with(mContext).load(userPost.downloadUrl).into(imgMeal);
+        nameAgeTxt.setText(userPost.mealName);
+        locationNameTxt.setText(userPost.score);
     }
 
     @SwipeOut
     private void onSwipedOut(){
         Log.d("EVENT", "onSwipedOut");
-        mSwipeView.addView(this);
+        //mSwipeView.addView(this);
     }
 
     @SwipeCancelState
@@ -64,6 +66,7 @@ public class MealCard {
     @SwipeIn
     private void onSwipeIn(){
         Log.d("EVENT", "onSwipedIn");
+        Log.d(TAG, "User swiped: " + userPost.mealName);
     }
 
     @SwipeInState

@@ -32,14 +32,11 @@ public class FirebaseHelper {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        final String userid = user.getUid();
+        final String userId = user.getUid();
+
 
         String fileName = "fileName.jpg";
-        String filePath = "images/users/"+userid+"/"+fileName;
-
-        StorageMetadata metadata = new StorageMetadata.Builder()
-                .setContentType("image/jpg")
-                .build();
+        String filePath = "images/users/"+userId+"/"+fileName;
 
         StorageReference storageReference = localStorageReference.child(filePath);
         storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -47,13 +44,13 @@ public class FirebaseHelper {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(TAG, "upload success: ");
                 Uri uri = taskSnapshot.getDownloadUrl();
-                uploadDownloadURL(uri, userid);
+                uploadDownloadURL(uri, userId);
             }
         });
     }
 
     /*
-     * Upload photo download url
+     * Upload photo downloadUrl
      */
     private static void uploadDownloadURL(Uri downloadURL, String userId){
         Log.i(TAG, "Save download url" + downloadURL.toString());

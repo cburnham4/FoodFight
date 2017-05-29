@@ -1,5 +1,6 @@
 package letshangllc.foodfight.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
@@ -36,25 +37,33 @@ public class MainActivity extends AppCompatActivity {
     /* Views */
     private Toolbar toolbar;
     private SwipePlaceHolderView mSwipeView;
-
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getData();
         setupToolbar();
-        setupSwipeView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        progressDialog = ProgressDialog.show(this, "Gathering data", "Please wait...", true, false);
+        getData();
+
     }
 
     private void getData(){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseConstants.USER_POSTS);
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseConstants.USER_POSTS);
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 ArrayList<UserPost> userPosts = new ArrayList<>();
+
                 for (DataSnapshot userPostSnapshot: dataSnapshot.getChildren()) {
                     for(DataSnapshot postSnapshot: userPostSnapshot.getChildren()) {
                         UserPost post = postSnapshot.getValue(UserPost.class);
@@ -62,12 +71,16 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("Get Data", post.toString());
                     }
                 }
+
+                setupSwipeView(userPosts);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+
+                progressDialog.dismiss();
                 // ...
             }
         };
@@ -75,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setupSwipeView() {
+    private void setupSwipeView(ArrayList<UserPost> userPosts) {
         mSwipeView = (SwipePlaceHolderView) findViewById(R.id.swipeView);
 
         mSwipeView.getBuilder()
@@ -87,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
                         .setSwipeOutMsgLayoutId(R.layout.swipe_message_view_reject));
 
 
-        for (Meal meal : Utils.loadMeals(this)) {
-            mSwipeView.addView(new MealCard(this, meal, mSwipeView));
+        for (UserPost userPost : userPosts) {
+            mSwipeView.addView(new MealCard(this, userPost, mSwipeView));
         }
 
         findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
@@ -104,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
                 mSwipeView.doSwipe(true);
             }
         });
+
+        progressDialog.dismiss();
     }
 
     private void setupToolbar() {
