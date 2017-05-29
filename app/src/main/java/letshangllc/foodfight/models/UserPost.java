@@ -47,4 +47,8 @@ public class UserPost {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return mealName;
+    }
 }

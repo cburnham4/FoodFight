@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_take_photo"
+        android:id="@+id/action_upload_meal"
         android:title="@string/capture"
-        android:icon="@android:drawable/ic_menu_camera"
+        android:icon="@android:drawable/ic_menu_add"
         app:showAsAction="always"
         />
 </menu>
