@@ -98,6 +98,7 @@
     <orderEntry type="library" exported="" name="placeholderview-0.6.2" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="transition-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="firebase-storage-common-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="design-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="play-services-auth-base-10.2.6" level="project" />
@@ -109,7 +110,9 @@
     <orderEntry type="library" exported="" name="glide-3.7.0" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="firebase-database-connection-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="play-services-auth-10.2.6" level="project" />
+    <orderEntry type="library" exported="" name="firebase-storage-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-impl-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="firebase-common-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="gson-2.7" level="project" />
@@ -117,6 +120,7 @@
     <orderEntry type="library" exported="" name="play-services-tasks-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="support-v4-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-media-compat-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="firebase-database-10.2.6" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-25.3.1" level="project" />
