@@ -14,7 +14,7 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class UserPost {
 
-    public String uid, mealName, downloadUrl;
+    public String uid, mealName, downloadUrl, key;
     public ArrayList<String> ingredients, instructions;
     public int score = 0;
 
@@ -37,14 +37,18 @@ public class UserPost {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid", uid);
-        result.put("mealName", mealName);
+        result.put(DatabaseConstants.USER_ID, uid);
+        result.put(DatabaseConstants.MEAL_NAME, mealName);
         result.put("ingredients", ingredients);
         result.put("instructions", instructions);
-        result.put("downloadUrl", downloadUrl);
-        result.put("score", score);
+        result.put(DatabaseConstants.DOWNLOAD_URL, downloadUrl);
+        result.put(DatabaseConstants.SCORE, score);
 
         return result;
+    }
+
+    public void setKey(String key){
+        this.key = key;
     }
 
     @Override

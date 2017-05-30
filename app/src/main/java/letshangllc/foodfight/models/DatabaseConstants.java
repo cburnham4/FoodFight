@@ -6,8 +6,11 @@ package letshangllc.foodfight.models;
 
 public interface DatabaseConstants {
     String USER_POSTS = "userPosts";
+    String USER_LIKED = "userLiked";
+    String POST_KEY = "postKey";
     String DOWNLOAD_URL = "downloadUR=rl";
     String SCORE = "score";
     String USER_ID = "uid";
+    String MEAL_NAME = "mealName";
 
 }

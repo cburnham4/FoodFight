@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import letshangllc.foodfight.R;
 import letshangllc.foodfight.models.DatabaseConstants;
+import letshangllc.foodfight.models.FirebaseHelper;
 import letshangllc.foodfight.models.layoutbindings.MealCard;
 import letshangllc.foodfight.models.UserPost;
 
@@ -67,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DataSnapshot userPostSnapshot: dataSnapshot.getChildren()) {
                     for(DataSnapshot postSnapshot: userPostSnapshot.getChildren()) {
+
                         UserPost post = postSnapshot.getValue(UserPost.class);
+                        post.key = postSnapshot.getKey();
                         userPosts.add(post);
                         Log.e("Get Data", post.toString());
                     }
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(true);
+
             }
         });
 

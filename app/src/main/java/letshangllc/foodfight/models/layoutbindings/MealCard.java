@@ -19,6 +19,7 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 import java.util.Locale;
 
 import letshangllc.foodfight.R;
+import letshangllc.foodfight.models.FirebaseHelper;
 import letshangllc.foodfight.models.UserPost;
 
 import static android.content.ContentValues.TAG;
@@ -70,6 +71,7 @@ public class MealCard {
     private void onSwipeIn(){
         Log.d("EVENT", "onSwipedIn");
         Log.d(TAG, "User swiped: " + userPost.mealName);
+        FirebaseHelper.uploadLikedMeal(userPost);
     }
 
     @SwipeInState

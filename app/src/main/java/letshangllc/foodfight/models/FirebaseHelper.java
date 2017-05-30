@@ -85,4 +85,18 @@ public class FirebaseHelper {
 
         firebaseListener.firebaseSucceeded(true);
     }
+
+    /*
+     * Upload Liked Photo to user saved
+     */
+    public static void uploadLikedMeal(UserPost userPost){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+        /* Point the database to the user's posts */
+        DatabaseReference databaseReference = firebaseDatabase.getReference(DatabaseConstants.USER_LIKED).child(userPost.uid);
+
+        /* Create an id for the new post */
+        String postId = databaseReference.push().getKey();
+        databaseReference.child(postId).setValue(userPost);
+    }
 }
