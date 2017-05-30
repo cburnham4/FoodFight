@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import letshangllc.foodfight.R;
 
@@ -28,5 +29,9 @@ public class Utils {
 
     public static void makeToast(Context context, String text){
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public static String intToString(int value){
+        return String.format(Locale.getDefault(), "%d", value);
     }
 }

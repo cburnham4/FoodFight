@@ -160,4 +160,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSwipeView.removeAllViews();
+    }
 }

@@ -164,21 +164,26 @@ public class CreateUserMealActivity extends AppCompatActivity {
                         CropImage.activity(imageUri)
                                 .setGuidelines(CropImageView.Guidelines.ON)
                                 .setCropShape(CropImageView.CropShape.RECTANGLE)
-                                .setMinCropWindowSize(240,240)
-                                .setMinCropResultSize(240,240)
-                                .setMaxCropResultSize(720,720)
+
+//                                .setMinCropResultSize(100,100)
+//                                .setMaxCropResultSize(1024,1024)
+                                .setRequestedSize(720, 720, CropImageView.RequestSizeOptions.RESIZE_EXACT)
                                 .setAspectRatio(1,1)
+
+
                                 .start(this);
 
                     break;
                 case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
                     try {
                         CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
                         selectedImageUri = result.getUri();
 
                         /* Get bitmap */
                         InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
                         imgUploadedImage.setImageBitmap(selectedImage);
 //                        tvUploadImage.setBackground(new BitmapDrawable(getResources(), selectedImage));
 
@@ -237,6 +242,8 @@ public class CreateUserMealActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_LONG).show();
             return;
         }
+
+        Log.i(TAG, "Uploading photo");
 
         final ProgressDialog progressDialog = ProgressDialog.show(this, "Uploading Meal", "Please wait...", true, false);
         progressDialog.show();

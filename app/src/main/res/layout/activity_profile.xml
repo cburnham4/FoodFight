@@ -34,17 +34,18 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvFirstName"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/first_name"
                     android:textStyle="bold" />
 
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/last_name"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/tvLastName"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/last_name"/>-->
             </LinearLayout>
 
             <LinearLayout
@@ -54,6 +55,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvPostCount"
                     android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,6 +77,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvSavedCount"
                     android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -2,11 +2,13 @@ package letshangllc.foodfight.models.layoutbindings;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.mindorks.placeholderview.Animation;
 import com.mindorks.placeholderview.annotations.Animate;
+import com.mindorks.placeholderview.annotations.Click;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.NonReusable;
 import com.mindorks.placeholderview.annotations.Resolve;
@@ -23,6 +25,7 @@ import letshangllc.foodfight.models.UserPost;
 @NonReusable
 @Layout(R.layout.gallery_item)
 public class GalleryItem {
+    private static final String TAG = GalleryItem.class.getSimpleName();
 
     @View(R.id.imgMeal)
     private ImageView imgMeal;
@@ -40,5 +43,10 @@ public class GalleryItem {
     @Resolve
     private void onResolved() {
         Glide.with(context).load(userPost.downloadUrl).into(imgMeal);
+    }
+
+    @Click(R.id.imgMeal)
+    private void onClickListener(){
+        Log.i(TAG, "Clicked:" + userPost.mealName);
     }
 }
