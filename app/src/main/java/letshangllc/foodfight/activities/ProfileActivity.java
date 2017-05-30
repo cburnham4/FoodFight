@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.TextureView;
 import android.widget.TextView;
@@ -49,18 +50,25 @@ public class ProfileActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        setupToolbar();
+        findViews();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         progressDialog = ProgressDialog.show(this, "Gathering data", "Please wait...", true, false);
         progressDialog.show();
-        this.findViews();
         getUserPosts();
 
     }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
 
     private void findViews(){
         tvFirstName = (TextView) findViewById(R.id.tvFirstName);
