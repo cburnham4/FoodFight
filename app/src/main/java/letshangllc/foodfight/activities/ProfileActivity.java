@@ -53,6 +53,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     /* Data checkers - Make sure you have both things of data */
     private boolean hasPosts = false, hasSaved = false;
+
+    /* Data */
+    private ArrayList<UserPost> userPosts, usersLikedPosts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog = ProgressDialog.show(this, "Gathering data", "Please wait...", true, false);
         progressDialog.show();
         getUserPosts();
+        getUserLiked();
 
     }
 
@@ -104,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 // Get Post object and use the values to update the UI
-                ArrayList<UserPost> userPosts = new ArrayList<>();
+                userPosts = new ArrayList<>();
 
                 int postCount = 0;
 
@@ -118,7 +123,11 @@ public class ProfileActivity extends AppCompatActivity {
                 tvPostCount.setText(Utils.intToString(postCount));
                 progressDialog.dismiss();
 
-                setupTabs(userPosts);
+                hasPosts = true;
+
+                if(hasSaved){
+                    setupTabs();
+                }
             }
 
             @Override
@@ -133,7 +142,51 @@ public class ProfileActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(postListener);
     }
 
-    private void setupTabs(ArrayList<UserPost> userPosts) {
+    private void getUserLiked(){
+        String userId = firebaseUser.getUid();
+
+        final DatabaseReference databaseReference =
+                FirebaseDatabase.getInstance().getReference(DatabaseConstants.USER_LIKED).child(userId);
+
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                // Get Post object and use the values to update the UI
+                usersLikedPosts = new ArrayList<>();
+
+                int postCount = 0;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    UserPost post = postSnapshot.getValue(UserPost.class);
+                    usersLikedPosts.add(post);
+                    Log.e("Get Data", post.toString());
+                    postCount++;
+                }
+
+                tvPostCount.setText(Utils.intToString(postCount));
+                progressDialog.dismiss();
+
+                hasSaved = true;
+
+                if(hasPosts){
+                    setupTabs();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+
+                progressDialog.dismiss();
+                // ...
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(postListener);
+    }
+
+    private void setupTabs() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.vpProfile);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -149,12 +202,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         UserPostsFragment userPostsFragment2 = new UserPostsFragment();
         Bundle postsBundle2 = new Bundle();
-        postsBundle.putParcelableArrayList(DatabaseConstants.USER_POSTS, userPosts);
+        postsBundle2.putParcelableArrayList(DatabaseConstants.USER_POSTS, usersLikedPosts);
         userPostsFragment2.setArguments(postsBundle2);
 
 
         adapter.addFragment(userPostsFragment, "Posts");
-        //adapter.addFragment(userPostsFragment2, "Posts");
+        adapter.addFragment(userPostsFragment2, "Liked");
 
         viewPager.setAdapter(adapter);
     }

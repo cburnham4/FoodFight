@@ -6,4 +6,5 @@
     android:layout_height="wrap_content"
     app:layout_scrollFlags="scroll|enterAlways"
     android:background="@color/primary"
+    android:layout_alignParentTop="true"
     android:theme="@style/MyMaterialTheme.AppBarOverlay" />
