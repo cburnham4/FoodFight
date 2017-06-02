@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,13 +11,17 @@
 
     <com.mindorks.placeholderview.SwipePlaceHolderView
         android:id="@+id/swipeView"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/food_card_height"/>
+        android:layout_above="@+id/linLikeButtons"
+        android:layout_height="match_parent"/>
 
     <LinearLayout
+        android:id="@+id/linLikeButtons"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_gravity="bottom"
+        android:layout_above="@+id/bottomBar"
         android:gravity="center"
         android:orientation="horizontal">
         <ImageButton
@@ -33,7 +37,15 @@
             android:background="@android:drawable/ic_input_add"/>
     </LinearLayout>
 
+    <com.roughike.bottombar.BottomBar
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
 
 
 
-</LinearLayout>
+
+
+</RelativeLayout>
