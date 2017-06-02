@@ -1,7 +1,13 @@
 package letshangllc.foodfight.activities;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.net.Uri;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,8 +30,10 @@ import com.mindorks.placeholderview.PlaceHolderView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import letshangllc.foodfight.R;
+import letshangllc.foodfight.fragments.UserPostsFragment;
 import letshangllc.foodfight.models.DatabaseConstants;
 import letshangllc.foodfight.models.UserPost;
 import letshangllc.foodfight.models.Utils;
@@ -43,6 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
 
+    /* Data checkers - Make sure you have both things of data */
+    private boolean hasPosts = false, hasSaved = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,24 +91,9 @@ public class ProfileActivity extends AppCompatActivity {
     private void getUserPosts(){
         String userId = firebaseUser.getUid();
 
-//        String displayName = "";
-//        for (UserInfo profile : firebaseUser.getProviderData()) {
-//            // Id of the provider (ex: google.com)
-//            String providerId = profile.getProviderId();
-//
-//            // UID specific to the provider
-//            String uid = profile.getUid();
-//
-//            // Name, email address, and profile photo Url
-//            displayName = profile.getDisplayName();
-//            String email = profile.getEmail();
-//            Uri photoUrl = profile.getPhotoUrl();
-//        };
-
         String displayName = firebaseUser.getDisplayName();
         if(displayName!=null && !displayName.isEmpty())tvFirstName.setText(firebaseUser.getDisplayName());
         else tvFirstName.setText(firebaseUser.getEmail());
-
 
 
         final DatabaseReference databaseReference =
@@ -113,8 +108,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                 int postCount = 0;
 
-                Log.i(TAG, "Posts#: ");
-
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     UserPost post = postSnapshot.getValue(UserPost.class);
                     userPosts.add(post);
@@ -123,7 +116,9 @@ public class ProfileActivity extends AppCompatActivity {
                 }
 
                 tvPostCount.setText(Utils.intToString(postCount));
-                setupGallery(userPosts);
+                progressDialog.dismiss();
+
+                setupTabs(userPosts);
             }
 
             @Override
@@ -138,15 +133,59 @@ public class ProfileActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(postListener);
     }
 
-    private void setupGallery(ArrayList<UserPost> userPosts){
-        PlaceHolderView mGalleryView = (PlaceHolderView)findViewById(R.id.galleryView);
-        mGalleryView.getBuilder().setLayoutManager(new GridLayoutManager(this.getApplicationContext(), 3));
+    private void setupTabs(ArrayList<UserPost> userPosts) {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.vpProfile);
 
-        for (UserPost userPost : userPosts) {
-            mGalleryView.addView(new GalleryItem(this, userPost));
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        UserPostsFragment userPostsFragment = new UserPostsFragment();
+        Bundle postsBundle = new Bundle();
+        postsBundle.putParcelableArrayList(DatabaseConstants.USER_POSTS, userPosts);
+        userPostsFragment.setArguments(postsBundle);
+
+
+        UserPostsFragment userPostsFragment2 = new UserPostsFragment();
+        Bundle postsBundle2 = new Bundle();
+        postsBundle.putParcelableArrayList(DatabaseConstants.USER_POSTS, userPosts);
+        userPostsFragment2.setArguments(postsBundle2);
+
+
+        adapter.addFragment(userPostsFragment, "Posts");
+        //adapter.addFragment(userPostsFragment2, "Posts");
+
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
-        progressDialog.dismiss();
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 
 

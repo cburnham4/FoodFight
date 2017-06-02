@@ -1,5 +1,8 @@
 package letshangllc.foodfight.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -12,7 +15,7 @@ import java.util.Map;
  */
 
 @IgnoreExtraProperties
-public class UserPost {
+public class UserPost implements Parcelable{
 
     public String uid, mealName, downloadUrl, key;
     public ArrayList<String> ingredients, instructions;
@@ -34,6 +37,28 @@ public class UserPost {
         this.instructions = new ArrayList<>();
     }
 
+    protected UserPost(Parcel in) {
+        uid = in.readString();
+        mealName = in.readString();
+        downloadUrl = in.readString();
+        key = in.readString();
+        ingredients = in.createStringArrayList();
+        instructions = in.createStringArrayList();
+        score = in.readInt();
+    }
+
+    public static final Creator<UserPost> CREATOR = new Creator<UserPost>() {
+        @Override
+        public UserPost createFromParcel(Parcel in) {
+            return new UserPost(in);
+        }
+
+        @Override
+        public UserPost[] newArray(int size) {
+            return new UserPost[size];
+        }
+    };
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -54,5 +79,21 @@ public class UserPost {
     @Override
     public String toString() {
         return mealName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeString(mealName);
+        dest.writeString(downloadUrl);
+        dest.writeString(key);
+        dest.writeStringList(ingredients);
+        dest.writeStringList(instructions);
+        dest.writeInt(score);
     }
 }

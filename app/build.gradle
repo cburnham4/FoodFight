@@ -28,12 +28,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    //Google support
-
-    //Custom Libraries
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
-
-    // firebase
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
