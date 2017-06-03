@@ -9,33 +9,12 @@
 
     <include layout="@layout/toolbar"/>
 
-    <com.mindorks.placeholderview.SwipePlaceHolderView
-        android:id="@+id/swipeView"
+    <fragment
+        android:id="@+id/fragmentPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_above="@+id/linLikeButtons"
-        android:layout_height="match_parent"/>
-
-    <LinearLayout
-        android:id="@+id/linLikeButtons"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="bottom"
-        android:layout_above="@+id/bottomBar"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/rejectBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@android:drawable/ic_delete"/>
-        <ImageButton
-            android:id="@+id/acceptBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="30dp"
-            android:background="@android:drawable/ic_input_add"/>
-    </LinearLayout>
+        android:layout_above="@+id/bottomBar"/>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
@@ -43,9 +22,6 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
-
-
-
 
 
 </RelativeLayout>
