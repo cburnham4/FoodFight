@@ -41,6 +41,9 @@ public class LikedMealsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_liked_meals, container, false);
 
+        progressDialog = ProgressDialog.show(getContext(), "Gathering data", "Please wait...", true, false);
+        progressDialog.show();
+
         getUserLiked();
 
         return view;

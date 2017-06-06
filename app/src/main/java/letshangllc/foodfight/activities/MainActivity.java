@@ -52,13 +52,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupToolbar();
+        setFirstTab();
         setupBottomBar();
+    }
+
+    private void setFirstTab(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        /* Fragments */
+        final MealSwipeFragment mealSwipeFragment = new MealSwipeFragment();
+
+        fragmentTransaction.add(R.id.linFragmentViewer, mealSwipeFragment);
+        fragmentTransaction.commit();
     }
 
     /* Setup the bottom bar to handle fragment transactions */
     private void setupBottomBar(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
 
         /* Fragments */
         final MealSwipeFragment mealSwipeFragment = new MealSwipeFragment();
@@ -66,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
         final LikedMealsFragment likedMealsFragment = new LikedMealsFragment();
         final ProfileFragment profileFragment = new ProfileFragment();
 
-        fragmentTransaction.add(R.id.linFragmentViewer, mealSwipeFragment);
-        fragmentTransaction.commit();
+
 
         /* Setup tab bar */
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 if (tabId == R.id.tab_main) {
                     fragmentTransaction.replace(R.id.linFragmentViewer, mealSwipeFragment);
                 }else if (tabId == R.id.tab_profile) {
