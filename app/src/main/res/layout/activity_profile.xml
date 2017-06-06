@@ -81,7 +81,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvSavedCount"
+                    android:id="@+id/tvLikedCount"
                     android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/saved"/>
+                    android:text="@string/liked"/>
             </LinearLayout>
 
 

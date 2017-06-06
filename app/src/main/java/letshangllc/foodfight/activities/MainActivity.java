@@ -31,9 +31,11 @@ import com.roughike.bottombar.OnTabSelectListener;
 import java.util.ArrayList;
 
 import letshangllc.foodfight.R;
+import letshangllc.foodfight.fragments.LikedMealsFragment;
 import letshangllc.foodfight.fragments.MealSwipeFragment;
+import letshangllc.foodfight.fragments.PopularMealsFragment;
+import letshangllc.foodfight.fragments.ProfileFragment;
 import letshangllc.foodfight.models.DatabaseConstants;
-import letshangllc.foodfight.models.FirebaseHelper;
 import letshangllc.foodfight.models.layoutbindings.MealCard;
 import letshangllc.foodfight.models.UserPost;
 
@@ -41,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     /* Views */
-    private Toolbar toolbar;
     private SwipePlaceHolderView mSwipeView;
     private ProgressDialog progressDialog;
 
@@ -50,115 +51,58 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        /* TODO: Setup tab listeners */
-        addFragment();
         setupToolbar();
         setupBottomBar();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        progressDialog = ProgressDialog.show(this, "Gathering data", "Please wait...", true, false);
-        progressDialog.show();
-        getData();
-
-    }
-
-    private void addFragment(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        MealSwipeFragment mealSwipeFragment = new MealSwipeFragment();
-        fragmentTransaction.add(R.id.fragmentPager, mealSwipeFragment);
-        fragmentTransaction.commit();
-    }
-
+    /* Setup the bottom bar to handle fragment transactions */
     private void setupBottomBar(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        /* Fragments */
+        final MealSwipeFragment mealSwipeFragment = new MealSwipeFragment();
+        final PopularMealsFragment popularMealsFragment = new PopularMealsFragment();
+        final LikedMealsFragment likedMealsFragment = new LikedMealsFragment();
+        final ProfileFragment profileFragment = new ProfileFragment();
+
+        fragmentTransaction.add(R.id.linFragmentViewer, mealSwipeFragment);
+        fragmentTransaction.commit();
+
+        /* Setup tab bar */
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 if (tabId == R.id.tab_main) {
-                    // The tab with id R.id.tab_favorites was selected,
-                    // change your content accordingly.
+                    fragmentTransaction.replace(R.id.linFragmentViewer, mealSwipeFragment);
+                }else if (tabId == R.id.tab_profile) {
+                    fragmentTransaction.replace(R.id.linFragmentViewer, profileFragment);
+                }else if (tabId == R.id.tab_liked){
+                    fragmentTransaction.replace(R.id.linFragmentViewer, likedMealsFragment);
+                }else if(tabId == R.id.tab_popular){
+                    fragmentTransaction.replace(R.id.linFragmentViewer, popularMealsFragment);
                 }
+
+                /* Commit the fragment transaction */
+                fragmentTransaction.addToBackStack(getString(R.string.profile_activity));
+                fragmentTransaction.commit();
             }
         });
     }
 
-    private void getData(){
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DatabaseConstants.USER_POSTS);
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                ArrayList<UserPost> userPosts = new ArrayList<>();
-
-                for (DataSnapshot userPostSnapshot: dataSnapshot.getChildren()) {
-                    for(DataSnapshot postSnapshot: userPostSnapshot.getChildren()) {
-
-                        UserPost post = postSnapshot.getValue(UserPost.class);
-                        post.key = postSnapshot.getKey();
-                        userPosts.add(post);
-                        Log.e("Get Data", post.toString());
-                    }
-                }
-
-                setupSwipeView(userPosts);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-
-                progressDialog.dismiss();
-                // ...
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(postListener);
-    }
-
-    private void setupSwipeView(ArrayList<UserPost> userPosts) {
-        mSwipeView = (SwipePlaceHolderView) findViewById(R.id.swipeView);
-
-        mSwipeView.getBuilder()
-                .setDisplayViewCount(3)
-                .setSwipeDecor(new SwipeDecor()
-                        .setPaddingTop(20)
-                        .setRelativeScale(0.01f)
-                        .setSwipeInMsgLayoutId(R.layout.swipe_message_view_accept)
-                        .setSwipeOutMsgLayoutId(R.layout.swipe_message_view_reject));
-
-
-        for (UserPost userPost : userPosts) {
-            mSwipeView.addView(new MealCard(this, userPost, mSwipeView));
+    @Override
+    /* Override backpress to go back in the fragment stack */
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
         }
-
-        findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(false);
-            }
-        });
-
-        findViewById(R.id.acceptBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(true);
-
-            }
-        });
-
-        progressDialog.dismiss();
     }
 
     private void setupToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
@@ -181,9 +125,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_logout:
                 logout();
-                return true;
-            case R.id.action_profile:
-                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

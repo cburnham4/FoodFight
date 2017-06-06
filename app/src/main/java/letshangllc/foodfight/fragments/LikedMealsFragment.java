@@ -9,10 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,75 +29,43 @@ import letshangllc.foodfight.models.layoutbindings.GalleryItem;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
-    private static final String TAG = ProfileFragment.class.getSimpleName();
+public class LikedMealsFragment extends Fragment {
+    private static final String TAG = LikedMealsFragment.class.getSimpleName();
 
     /* Views */
-    ProgressDialog progressDialog;
-    private TextView tvFirstName, tvLastName, tvLikedCount, tvPostCount;
-
-    /* Firebase */
-    private FirebaseUser firebaseUser;
-    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_liked_meals, container, false);
 
-        setupFirebase();
-        progressDialog = ProgressDialog.show(getContext(), "Gathering data", "Please wait...", true, false);
-        progressDialog.show();
-        findViews(view);
-        getUserPosts();
+        getUserLiked();
 
         return view;
     }
 
-    private void setupFirebase(){
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-    }
-
-    private void findViews(View view){
-        tvFirstName = (TextView) view.findViewById(R.id.tvFirstName);
-        //tvLastName = (TextView) findViewById(R.id.tvLastName);
-        tvLikedCount = (TextView) view.findViewById(R.id.tvLikedCount);
-        tvPostCount = (TextView) view.findViewById(R.id.tvPostCount);
-    }
-
-
-    private void getUserPosts(){
-        String userId = firebaseUser.getUid();
-
-        String displayName = firebaseUser.getDisplayName();
-        if(displayName!=null && !displayName.isEmpty())tvFirstName.setText(firebaseUser.getDisplayName());
-        else tvFirstName.setText(firebaseUser.getEmail());
-
+    private void getUserLiked(){
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         final DatabaseReference databaseReference =
-                FirebaseDatabase.getInstance().getReference(DatabaseConstants.USER_POSTS).child(userId);
+                FirebaseDatabase.getInstance().getReference(DatabaseConstants.USER_LIKED).child(userId);
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                // Get Post object and use the values to update the UI
-                ArrayList<UserPost> userPosts = new ArrayList<>();
+                ArrayList<UserPost> usersLikedPosts = new ArrayList<>();
 
-                int postCount = 0;
-
+                /* Loop through user liked photos and add them to the list */
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     UserPost post = postSnapshot.getValue(UserPost.class);
-                    userPosts.add(post);
-                    Log.e("Get Data", post.toString());
-                    postCount++;
+                    usersLikedPosts.add(post);
                 }
 
-                tvPostCount.setText(Utils.intToString(postCount));
                 progressDialog.dismiss();
 
-                setupGallery(userPosts);
+                setupGallery(usersLikedPosts);
             }
 
             @Override
@@ -108,13 +74,13 @@ public class ProfileFragment extends Fragment {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
 
                 progressDialog.dismiss();
-                // ...
             }
         };
         databaseReference.addListenerForSingleValueEvent(postListener);
     }
 
 
+    /* Setup the gallery of liked meals */
     private void setupGallery(ArrayList<UserPost> userPosts) {
         PlaceHolderView mGalleryView = (PlaceHolderView) getView().findViewById(R.id.galleryView);
         mGalleryView.getBuilder().setLayoutManager(new GridLayoutManager(this.getContext(), 3));
@@ -123,7 +89,4 @@ public class ProfileFragment extends Fragment {
             mGalleryView.addView(new GalleryItem(this.getContext(), userPost));
         }
     }
-
-
-
 }

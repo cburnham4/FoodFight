@@ -8,12 +8,6 @@
         app:showAsAction="ifRoom"
         />
 
-    <item
-        android:id="@+id/action_profile"
-        android:title="@string/capture"
-        android:icon="@android:drawable/ic_menu_gallery"
-        app:showAsAction="ifRoom"
-        />
 
     <item
         android:id="@+id/action_logout"

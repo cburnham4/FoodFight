@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="letshangllc.foodfight.fragments.UserPostsFragment">
+    tools:context="letshangllc.foodfight.fragments.LikedMealsFragment">
 
     <com.mindorks.placeholderview.PlaceHolderView
         android:id="@+id/galleryView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 
 </FrameLayout>

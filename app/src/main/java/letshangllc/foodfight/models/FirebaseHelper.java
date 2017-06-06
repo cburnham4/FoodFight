@@ -87,7 +87,7 @@ public class FirebaseHelper {
     }
 
     /*
-     * Upload Liked Photo to user saved
+     * Upload Liked Photo to user likes
      */
     public static void uploadLikedMeal(UserPost userPost){
         firebaseDatabase = FirebaseDatabase.getInstance();

@@ -3,12 +3,25 @@
         id="@+id/tab_main"
         icon="@drawable/icon_dish_114"
         title="Favorites" />
+
+    <tab
+        id="@+id/tab_popular"
+        icon="@drawable/icon_dish_114"
+        title="Popular" />
+
+    <tab
+        id="@+id/tab_liked"
+        icon="@drawable/icon_dish_114"
+        title="Popular" />
+
     <tab
         id="@+id/tab_profile"
         icon="@drawable/icon_dish_114"
-        title="Nearby" />
-    <tab
-        id="@+id/tab_friends"
-        icon="@drawable/icon_dish_114"
-        title="Friends" />
+        title="Profile" />
+
 </tabs>
+
+<!-- 1- Main/Swipe
+    2 - Popular
+    3 - Liked
+    4 - Profisle -->

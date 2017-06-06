@@ -1,13 +1,121 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="letshangllc.foodfight.fragments.ProfileFragment">
+    android:orientation="vertical"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/profile_image_sz"
+                android:layout_height="@dimen/profile_image_sz"
+                android:src="@drawable/profile_pic"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/profile_name_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvFirstName"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/first_name"
+                    android:textSize="@dimen/profile_name_text_sz"
+                    android:textStyle="bold" />
+
+                <!--<TextView-->
+                <!--android:id="@+id/tvLastName"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/last_name"/>-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/profile_name_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvPostCount"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="@dimen/profile_name_text_sz"
+                    android:gravity="center"
+                    android:textStyle="bold" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/posts"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/profile_name_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLikedCount"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="@dimen/profile_name_text_sz"
+                    android:gravity="center"
+                    android:textStyle="bold" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/liked"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"
+            />
+
+
+
+    </LinearLayout>
+
+    <com.mindorks.placeholderview.PlaceHolderView
+        android:id="@+id/galleryView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:scrollbars="vertical"/>
 
-</FrameLayout>
+
+
+
+</LinearLayout>

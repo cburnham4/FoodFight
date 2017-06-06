@@ -41,6 +41,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/meal_name"/>
+
+        <EditText
+            android:id="@+id/etZipCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/zip_code_optional"
+            android:inputType="number"/>
+
+
     </LinearLayout>
 
 

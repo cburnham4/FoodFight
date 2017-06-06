@@ -1,51 +1,37 @@
 package letshangllc.foodfight.activities;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
-import android.net.Uri;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.TextureView;
 import android.widget.TextView;
 
-import com.bumptech.glide.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mindorks.placeholderview.PlaceHolderView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import letshangllc.foodfight.R;
-import letshangllc.foodfight.fragments.UserPostsFragment;
 import letshangllc.foodfight.models.DatabaseConstants;
 import letshangllc.foodfight.models.UserPost;
 import letshangllc.foodfight.models.Utils;
-import letshangllc.foodfight.models.layoutbindings.GalleryItem;
-import letshangllc.foodfight.models.layoutbindings.MealCard;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = ProfileActivity.class.getSimpleName();
 
     /* Views */
     ProgressDialog progressDialog;
-    private TextView tvFirstName, tvLastName, tvSavedCount, tvPostCount;
+    private TextView tvFirstName, tvLastName, tvLikedCount, tvPostCount;
 
     /* Firebase */
     private FirebaseUser firebaseUser;
@@ -88,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void findViews(){
         tvFirstName = (TextView) findViewById(R.id.tvFirstName);
         //tvLastName = (TextView) findViewById(R.id.tvLastName);
-        tvSavedCount = (TextView) findViewById(R.id.tvSavedCount);
+        tvLikedCount = (TextView) findViewById(R.id.tvLikedCount);
         tvPostCount = (TextView) findViewById(R.id.tvPostCount);
     }
 
@@ -187,29 +173,29 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.vpProfile);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        UserPostsFragment userPostsFragment = new UserPostsFragment();
-        Bundle postsBundle = new Bundle();
-        postsBundle.putParcelableArrayList(DatabaseConstants.USER_POSTS, userPosts);
-        userPostsFragment.setArguments(postsBundle);
-
-
-        UserPostsFragment userPostsFragment2 = new UserPostsFragment();
-        Bundle postsBundle2 = new Bundle();
-        postsBundle2.putParcelableArrayList(DatabaseConstants.USER_POSTS, usersLikedPosts);
-        userPostsFragment2.setArguments(postsBundle2);
-
-
-        adapter.addFragment(userPostsFragment, "Posts");
-        adapter.addFragment(userPostsFragment2, "Liked");
-
-        viewPager.setAdapter(adapter);
+//        ViewPager viewPager = (ViewPager) findViewById(R.id.vpProfile);
+//
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        tabLayout.setupWithViewPager(viewPager);
+//
+//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//
+//        UserPostsFragment userPostsFragment = new UserPostsFragment();
+//        Bundle postsBundle = new Bundle();
+//        postsBundle.putParcelableArrayList(DatabaseConstants.USER_POSTS, userPosts);
+//        userPostsFragment.setArguments(postsBundle);
+//
+//
+//        UserPostsFragment userPostsFragment2 = new UserPostsFragment();
+//        Bundle postsBundle2 = new Bundle();
+//        postsBundle2.putParcelableArrayList(DatabaseConstants.USER_POSTS, usersLikedPosts);
+//        userPostsFragment2.setArguments(postsBundle2);
+//
+//
+//        adapter.addFragment(userPostsFragment, "Posts");
+//        adapter.addFragment(userPostsFragment2, "Liked");
+//
+//        viewPager.setAdapter(adapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

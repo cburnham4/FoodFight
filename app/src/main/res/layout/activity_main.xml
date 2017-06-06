@@ -9,8 +9,9 @@
 
     <include layout="@layout/toolbar"/>
 
-    <fragment
-        android:id="@+id/fragmentPager"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/linFragmentViewer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
